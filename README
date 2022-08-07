@@ -5,5 +5,6 @@ Rewritten in Python. Earlier parts in different repository.
 Exercise 4.03:
 scalar(sum(kube_pod_info{namespace="prometheus",created_by_kind="StatefulSet"}))
 
+Exercise 4.07 & 4.08:
 
-
+Created k8s-gitops repository for this.
