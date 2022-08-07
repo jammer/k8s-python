@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logger
+  namespace: pingpong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logger
+  template:
+    metadata:
+      labels:
+        app: logger
+    spec:
+      volumes:
+      - name: logger-data
+        persistentVolumeClaim:
+          claimName: logger-claim
+      containers:
+        - name: logger-writer
+          image: jammeri/writer:4.1.0
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
+          volumeMounts:
+          - name: logger-data
+            mountPath: /data
+        - name: logger-web
+          image: jammeri/logger:4.1.1
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /health
+              port: 3000
+          env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: logger-configmap
+                  key: message
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
+            limits:
+              cpu: "500m"
+              memory: "100Mi"
+          volumeMounts:
+          - name: logger-data
+            mountPath: /data

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logger-configmap
+  namespace: pingpong
+data:
+  message: "Hello"
