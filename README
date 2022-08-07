@@ -1,0 +1,9 @@
+DevOps with Kubernetes - Part 4 and Part 5
+
+Rewritten in Python. Earlier parts in different repository.
+
+Exercise 4.03:
+scalar(sum(kube_pod_info{namespace="prometheus",created_by_kind="StatefulSet"}))
+
+
+
