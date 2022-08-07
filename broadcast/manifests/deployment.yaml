@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broadcast-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: broadcast
+  template:
+    metadata:
+      labels:
+        app: broadcast
+    spec:
+      containers:
+        - name: broadcast
+          image: jammeri/broadcast:4.6.2
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "100Mi"
+            limits:
+              cpu: "50m"
+              memory: "500Mi"
+          env:
+           - name: NATS
+             value: "nats://my-nats.default:4222"
+           - name: POSTURL
+             value: "http://139.162.189.108:18585"
+

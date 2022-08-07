@@ -24,11 +24,21 @@ def root():
 <input type="text" name="todo" maxlength="140">
 <input type="submit" value="Create TODO">
 </form>
-<ul>"""
+<ul>
+<script type="text/javascript">
+function done(id) {{
+  x=new XMLHttpRequest();
+  x.open("PUT",id);
+  x.send();
+}}
+</script>
+"""
   req = httpx.get("http://backend-svc/todos")
-  todos = req.json()
   for todo in req.json():
-    resp = resp + f"<li>{todo}</li>"
+    if todo["done"]:
+      resp = resp + f"""<li style="text-decoration: line-through;">{todo["task"]}</li>"""
+    else:
+      resp = resp + f"""<li><button onclick="done('/todos/{todo["id"]}')">Done</button> {todo["task"]}</form></li>"""
   resp = resp + "</ul>"
   return resp
 

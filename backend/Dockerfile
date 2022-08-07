@@ -1,6 +1,7 @@
 FROM python:bullseye
 RUN pip install Flask
 RUN pip install "psycopg[binary]"
+RUN pip install nats-py
 WORKDIR /
 COPY backend.py ./
 ENV FLASK_APP=backend.py

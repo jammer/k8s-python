@@ -39,6 +39,8 @@ spec:
               cpu: "500m"
               memory: "500Mi"
           env:
+           - name: NATS
+             value: "nats://my-nats.default:4222"
            - name: SERVER
              valueFrom:
                secretKeyRef:
@@ -46,6 +48,9 @@ spec:
                  key: server
         - name: web
           image: IMAGEFRONTEND
+          env:
+           - name: NATS
+             value: "nats://my-nats.default:4222"
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 5
