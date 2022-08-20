@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test
+  labels:
+    website_url: example
+spec:
+  template:
+    spec:
+      volumes:
+      - name: crd-data2
+        persistentVolumeClaim:
+          claimName: crd-claim
+      containers:
+      - name: downloader
+        image: jammeri/download:1.00
+        env:
+        - name: WEBSITE
+          value: "www.example.org"
+        volumeMounts:
+        - name: crd-data2
+          mountPath: /usr/share/nginx/html
+      restartPolicy: Never

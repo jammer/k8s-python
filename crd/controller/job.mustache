@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{{ name }}}
+  labels:
+    website_url: "{{{ website }}}"
+spec:
+  template:
+    spec:
+      containers:
+      - name: {{{ name }}}-download
+        image: jammeri/download:1.00
+      restartPolicy: Never
+      env:
+      - name: WEBSITE
+        value: "{{{ website }}}"

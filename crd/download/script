@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /usr/share/nginx/html
+rm index.html
+wget --mirror --convert-links --adjust-extension --page-requisites --no-parent --no-host-directories "$WEBSITE"
+#nginx -g "daemon off;"

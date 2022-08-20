@@ -1,0 +1,6 @@
+apiVersion: stable.dwk/v1
+kind: Dummysite
+metadata:
+  name: "www.example.org"
+spec:
+  website_url: "www.example.org"

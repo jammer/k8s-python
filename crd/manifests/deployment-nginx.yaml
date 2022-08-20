@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crd
+  template:
+    metadata:
+      labels:
+        app: crd
+    spec:
+      volumes:
+      - name: crd-data
+        persistentVolumeClaim:
+          claimName: crd-claim
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "100Mi"
+          limits:
+            cpu: "500m"
+            memory: "500Mi"
+        volumeMounts:
+        - name: crd-data
+          mountPath: /usr/share/nginx/html
