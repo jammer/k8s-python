@@ -10,68 +10,70 @@ spec:
       app: project
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: project
     spec:
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: project-claim
       containers:
-        - name: backend
-          image: IMAGEBACKEND
-          readinessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            httpGet:
-              path: /health
-              port: 3000
-          livenessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            httpGet:
-              path: /health
-              port: 3000
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "100Mi"
-            limits:
-              cpu: "500m"
-              memory: "500Mi"
-          env:
-           - name: NATS
-             value: "nats://my-nats.default:4222"
-           - name: SERVER
-             valueFrom:
-               secretKeyRef:
-                 name: dburl
-                 key: server
-        - name: web
-          image: IMAGEFRONTEND
-          env:
-           - name: NATS
-             value: "nats://my-nats.default:4222"
-          readinessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            httpGet:
-              path: /health
-              port: 3001
-          livenessProbe:
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            httpGet:
-              path: /health
-              port: 3001
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "100Mi"
-            limits:
-              cpu: "500m"
-              memory: "500Mi"
-          volumeMounts:
-            - name: data
-              mountPath: /data
-
+      - env:
+        - name: NATS
+          value: nats://my-nats.default:4222
+        - name: SERVER
+          valueFrom:
+            secretKeyRef:
+              key: server
+              name: dburl
+        image: IMAGEBACKEND
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 20
+          periodSeconds: 5
+        name: backend
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+      - env:
+        - name: NATS
+          value: nats://my-nats.default:4222
+        image: IMAGEFRONTEND
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 20
+          periodSeconds: 5
+        name: web
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: project-claim
+---
