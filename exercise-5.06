@@ -1,0 +1,29 @@
+During the course:
+PostgreSQL for storage
+Redis for storage
+Helm for plugin management
+Github Actions for automating tasks/deployment
+Google Kubernetes Engine for running k8s
+Google Container Registry for storing container images
+Knative for serverless
+Traefik for k8s proxy
+Linkerd for service mesh
+Nginx for http server
+Kubernetes for container orchestration
+Grafana for monitoring
+Prometheus for monitoring
+Knative for serverless
+Countour proxy for serverless
+
+Outside The course:
+MariaDB
+MySQL
+Oracle
+Cassandra
+MongoDB
+Neo4J
+Kafka
+Gradle
+Jenkins
+Travis CI
+Ansible
