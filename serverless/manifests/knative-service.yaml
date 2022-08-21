@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: logger
+  namespace: pingpong
+spec:
+ template:
+    metadata:
+      name: logger-v1
+    spec:
+        containers:
+        - image: jammeri/logger:4.1.1
+          env:
+            - name: MESSAGE
+              value: "Hello from serverless" # Changed content
